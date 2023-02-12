@@ -70,7 +70,7 @@ class DecoderBlock(nn.Module):
         self.batchnorm1 = nn.BatchNorm2d(num_features=out_channels)
         self.batchnorm2 = nn.BatchNorm2d(num_features=out_channels)
 
-        self.pool = nn.ConvTranspose2d(in_channels=in_channels, out_channels=out_channels, kernel_size=pool_kernel_size, stride=2)
+        self.pool = nn.ConvTranspose2d(in_channels=in_channels, out_channels=out_channels, kernel_size=pool_kernel_size, stride=2, padding=0)
 
         self.layer = nn.Sequential(
             self.convlayer1,
@@ -82,7 +82,7 @@ class DecoderBlock(nn.Module):
         )
 
 
-    def forward(self, encoder_output, decoder_output):
+    def forward(self, decoder_output, encoder_output):
         inputs = self.pool(decoder_output)
         inputs = torch.cat([encoder_output, inputs], dim=1)
         output = self.layer(inputs)
